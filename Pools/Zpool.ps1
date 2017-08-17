@@ -1,13 +1,19 @@
 . .\Include.ps1
 
+$retries=1
+do {
 try {
-    $Zpool_Request = Invoke-WebRequest "http://www.zpool.ca/api/status" -UseBasicParsing | ConvertFrom-Json
+$Zpool_Request = Invoke-WebRequest "http://www.zpool.ca/api/status"
+-UseBasicParsing -timeoutsec 5 | ConvertFrom-Json
+#$Zpool_Request=get-content "..\zpool_request.json" | ConvertFrom-Json
 }
-catch {
-    return
+catch {}
+$retries++
+} while ($Zpool_Request -eq $null -and $retries -le 5)
+if ($retries -gt 5) {
+WRITE-HOST 'ZPOOL API NOT RESPONDING...ABORTING'
+EXIT
 }
-
-if (-not $Zpool_Request) {return}
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
