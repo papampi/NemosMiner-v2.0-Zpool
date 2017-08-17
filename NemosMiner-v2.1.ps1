@@ -49,7 +49,7 @@ else{$PSDefaultParameterValues["*:Proxy"] = $Proxy}
 
 $DecayStart = Get-Date
 $DecayPeriod = 60 #seconds
-$DecayBase = 1-0.1 #decimal percentage
+$DecayBase = 1-0.01 #decimal percentage
 
 $ActiveMinerPrograms = @()
 
